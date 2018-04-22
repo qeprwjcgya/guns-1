@@ -32,8 +32,8 @@ public class CarController {
     @RequestMapping(path = "/wechat/geo")
     public ResponseEntity<Map<String, String>> getGeo() {
         Map<String, String> map = Maps.newHashMap();
-        map.put("lat", "106.55");
-        map.put("lng", "29.57");
+        map.put("lng", "106.554546");
+        map.put("lat", "29.576546");
         map.put("title", "重庆市渝北区店");
         map.put("addr", "重庆市渝北区双龙大道");
 

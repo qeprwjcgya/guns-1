@@ -32,7 +32,7 @@ public class IndexController {
     @RequestMapping(path = "/wechat/location")
     public String errorPageInfo(Model model) {
         model.addAttribute("tips", "session超时");
-        return "/wechat/index.html";
+        return "/wechat/weindex.html";
     }
 
 }

@@ -34,6 +34,7 @@
     		success:function(data){
     			alert("获取目标地址成功:纬度=" + data.lat + ",经度=" + data.lng + ",标题=" + data.title + ",具体地址=" + data.addr)
     			var marker = "coord:" + data.lat + "," + data.lng +";title:"+encodeURIComponent(data.title)+";addr:" + encodeURIComponent(data.addr)
+
     			location.href = "http://apis.map.qq.com/tools/poimarker?type=0&marker="+marker+"&key=OJFBZ-43MW3-YAT3N-Y23XE-XKPRO-QGBX2&referer=myapp" ;
     		},
     		error:function(){
