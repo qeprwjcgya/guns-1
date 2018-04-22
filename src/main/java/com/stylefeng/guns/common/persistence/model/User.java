@@ -185,7 +185,7 @@ public class User extends Base {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserInfo{" +
                 "id=" + id +
                 ", avatar=" + avatar +
                 ", account=" + account +

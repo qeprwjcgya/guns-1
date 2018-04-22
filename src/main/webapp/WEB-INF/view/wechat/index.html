@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+	<meta HTTP-EQUIV="expires" CONTENT="0">
+	<meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>腾讯地图获取当前定位</title>
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+  </head>
+  
+  <body>
+  	<script type="text/javascript" src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
+	<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script type="text/javascript">
+    var geolocation = new qq.maps.Geolocation("OJFBZ-43MW3-YAT3N-Y23XE-XKPRO-QGBX2", "myapp");
+    //精确获取当前定位
+    geolocation.getLocation(function(position){
+    	//alert("当前位置->" + position.lat + "," + position.lng) ;
+    	var coord = position.lat + "," + position.lng ;
+    	//根据当前地址获取目标地址
+    	$.ajax({
+    		url:"https://car.tunnel.echomod.cn/wechat/geo",//从服务器根据当前的经纬度获取最近的目标地址
+    		type:"post",
+    		data:{
+    			lat:position.lat,
+    			lng:position.lng
+    		},
+    		dataType:"json",
+    		success:function(data){
+    			alert("获取目标地址成功:纬度=" + data.lat + ",经度=" + data.lng + ",标题=" + data.title + ",具体地址=" + data.addr)
+    			var marker = "coord:" + data.lat + "," + data.lng +";title:"+encodeURIComponent(data.title)+";addr:" + encodeURIComponent(data.addr)
+    			location.href = "http://apis.map.qq.com/tools/poimarker?type=0&marker="+marker+"&key=OJFBZ-43MW3-YAT3N-Y23XE-XKPRO-QGBX2&referer=myapp" ;
+    		},
+    		error:function(){
+    			alert("获取目标地址失败") ;
+    		}
+    	}) ;
+    }, function(){
+    	console.log("定位当前位置失败") ;
+    }, 8000) ;//设置timeout时间，默认为10秒
+    </script>
+  </body>
+</html>

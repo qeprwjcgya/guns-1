@@ -23,7 +23,6 @@ public class TestServiceImpl implements ITestService {
     TestMapper testMapper;
 
     @Override
-    @DataSource(name = DSEnum.DATA_SOURCE_BIZ)
     public void testBiz() {
         Test test = testMapper.selectByPrimaryKey(1);
         test.setId(22);
@@ -32,7 +31,6 @@ public class TestServiceImpl implements ITestService {
 
 
     @Override
-    @DataSource(name = DSEnum.DATA_SOURCE_GUNS)
     public void testGuns() {
         Test test = testMapper.selectByPrimaryKey(1);
         test.setId(33);
