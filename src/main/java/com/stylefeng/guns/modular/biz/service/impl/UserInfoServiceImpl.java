@@ -31,6 +31,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void saveUserInfo(UserInfo user) {
-        this.userMapper.insertSelective(user);
+        UserInfo info = userMapper.selectByPrimaryKey(user.getUserOpenid());
+        if (info == null) {
+            this.userMapper.insertSelective(user);
+        }
     }
 }
