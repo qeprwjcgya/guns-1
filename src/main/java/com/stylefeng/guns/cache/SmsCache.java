@@ -23,10 +23,10 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="wubin3347@gmail.com">wubin</a>
  * @version 1.0.0
  */
-public enum GuavaCache {
+public enum SmsCache {
     CACHE;
     private Cache<String, String> cache =
-            CacheBuilder.newBuilder().maximumSize(2).expireAfterWrite(300, TimeUnit.SECONDS)
+            CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(300, TimeUnit.SECONDS)
                         .build(new CacheLoader<String, String>() {
                             @Override
                             public String load(String key) throws Exception {
@@ -37,4 +37,6 @@ public enum GuavaCache {
     public Cache<String, String> getCache() {
         return cache;
     }
+
+
 }

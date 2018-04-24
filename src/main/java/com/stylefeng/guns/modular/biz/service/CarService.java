@@ -1,10 +1,14 @@
 package com.stylefeng.guns.modular.biz.service;
 
+import com.stylefeng.guns.modular.biz.model.Brand;
 import com.stylefeng.guns.modular.biz.model.Car;
 import com.stylefeng.guns.modular.biz.model.Order;
+import com.stylefeng.guns.modular.biz.model.Store;
 import com.stylefeng.guns.modular.biz.util.IService;
 import com.stylefeng.guns.modular.biz.vo.CarVo;
 import com.stylefeng.guns.modular.biz.vo.OrderVo;
+
+import java.util.List;
 
 /**
  * <p>Description: </p>
@@ -43,6 +47,19 @@ public interface CarService extends IService<Car> {
      * @param store
      * @return
      */
-    OrderVo.Store getGeo(OrderVo.Store store);
+    Store getGeo(Store store);
+
+    /**
+     * 是否推荐类型
+     * @return
+     */
+    List<Brand> getCarType(Integer type);
+
+    /**
+     * 查询父id对应的节点
+     * @param parentId
+     * @return
+     */
+    public List<Brand> getCarTypeParent(Long parentId);
 
 }

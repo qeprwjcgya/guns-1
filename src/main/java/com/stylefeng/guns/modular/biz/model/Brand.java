@@ -58,6 +58,12 @@ public class Brand implements Serializable {
     @Column(name = "gmt_create")
     private Date gmtCreate;
 
+    /**
+     * 推荐类型
+     */
+    @Column(name = "recommend")
+    private Integer recommend;
+
     public Long getId() {
         return id;
     }

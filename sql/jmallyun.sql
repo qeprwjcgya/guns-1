@@ -27,6 +27,7 @@ CREATE TABLE `car_brand` (
   `brand_sort` int(11) DEFAULT '1' COMMENT '排序',
   `brand_level` int(11) DEFAULT '1' COMMENT '层级',
   `gmt_create` datetime DEFAULT NULL,
+  `recommend` int(1) DEFAULT 2 COMMENT '推荐(1:推荐，2：否)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

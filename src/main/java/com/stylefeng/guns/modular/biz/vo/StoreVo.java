@@ -1,5 +1,7 @@
 package com.stylefeng.guns.modular.biz.vo;
 
+import com.stylefeng.guns.modular.biz.model.Store;
+
 /**
  * <p>Description: </p>
  * <p>Copyright(c) 2017-2019 lyzb.com Inc. All Rights Reserved.</p>
@@ -17,7 +19,7 @@ package com.stylefeng.guns.modular.biz.vo;
  * @author <a href="wubin3347@gmail.com">wubin</a>
  * @version 1.0.0
  */
-public class StoreVo extends OrderVo.Store {
+public class StoreVo extends Store {
     private double distance;
 
     public double getDistance() {

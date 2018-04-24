@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.biz.service.impl;
 
 import com.stylefeng.guns.modular.biz.dao.UserInfoMapper;
+import com.stylefeng.guns.modular.biz.exception.BusinessException;
 import com.stylefeng.guns.modular.biz.model.UserInfo;
 import com.stylefeng.guns.modular.biz.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void saveUserInfo(UserInfo user) {
-        UserInfo info = userMapper.selectByPrimaryKey(user.getUserOpenid());
-        if (info == null) {
-            this.userMapper.insertSelective(user);
+        try {
+            UserInfo info = userMapper.selectByPrimaryKey(user.getUserOpenid());
+            if (info == null) {
+                this.userMapper.insertSelective(user);
+            }
+        } catch (Exception ex) {
+            throw new BusinessException();
         }
     }
 }

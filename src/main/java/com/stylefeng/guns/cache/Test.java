@@ -21,7 +21,7 @@ import com.google.common.cache.Cache;
  */
 public class Test {
     public static void main(String[] args) throws InterruptedException {
-        Cache<String,String> cache = GuavaCache.CACHE.getCache();
+        Cache<String,String> cache = SmsCache.CACHE.getCache();
         cache.put("key1","value1");
         int time = 1;
         while(true) {

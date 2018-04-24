@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.biz.service.impl;
 
 import com.stylefeng.guns.modular.biz.dao.*;
+import com.stylefeng.guns.modular.biz.exception.BusinessException;
 import com.stylefeng.guns.modular.biz.model.*;
 import com.stylefeng.guns.modular.biz.service.CarService;
 import com.stylefeng.guns.modular.biz.util.BaseService;
@@ -12,8 +13,10 @@ import com.stylefeng.guns.modular.biz.vo.StoreVo;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Description: </p>
@@ -36,6 +39,8 @@ import java.util.Date;
 public class CarServiceImpl extends BaseService<Car> implements CarService {
 
     @Autowired
+    private BrandMapper brandMapper;
+    @Autowired
     private CarMapper carMapper;
     @Autowired
     private UserInfoMapper userInfoMapper;
@@ -50,65 +55,105 @@ public class CarServiceImpl extends BaseService<Car> implements CarService {
 
     @Override
     public boolean insertCarInfo(CarVo carVo) {
-        Car car = new Car();
         try {
-            BeanUtils.copyProperties(car, carVo);
+            Car car = new Car();
+            try {
+                BeanUtils.copyProperties(car, carVo);
+            } catch (Exception ex) {
+
+            }
+
+            UserInfo user = this.userInfoMapper.selectByPrimaryKey(carVo.getOpenid());
+            car.setUserId(user.getId());
+            car.setUserId(PKGenerator.getInstance().generateKey());
+            car.setGmtCreate(new Date());
+            int result = carMapper.insertSelective(car);
+            return result > 0 ? true : false;
         } catch (Exception ex) {
-
+            throw new BusinessException();
         }
-
-        UserInfo user = this.userInfoMapper.selectByPrimaryKey(carVo.getOpenid());
-        car.setUserId(user.getId());
-        car.setUserId(PKGenerator.getInstance().generateKey());
-        car.setGmtCreate(new Date());
-        int result = carMapper.insertSelective(car);
-        return result > 0 ? true : false;
     }
 
     @Override
     public Order addOrder(OrderVo orderVo) {
+        try {
+            Order order = new Order();
+            order.setId(PKGenerator.getInstance().generateKey());
 
-        Order order = new Order();
-        order.setId(PKGenerator.getInstance().generateKey());
+            Project project = this.projectMapper.selectByPrimaryKey(orderVo.getProjectId());
+            UserInfo userInfo = this.userInfoMapper.selectByPrimaryKey(orderVo.getOpenid());
+            Car car = new Car();
+            car.setCarNumberRegion(orderVo.getCarRegion());
+            car.setCarNumberEnd(orderVo.getCarNumber());
+            car = this.carMapper.selectOne(car);
 
-        Project project = this.projectMapper.selectByPrimaryKey(orderVo.getProjectId());
-        UserInfo userInfo = this.userInfoMapper.selectByPrimaryKey(orderVo.getOpenid());
-        Car car = new Car();
-        car.setCarNumberRegion(orderVo.getCarRegion());
-        car.setCarNumberEnd(orderVo.getCarNumber());
-        car = this.carMapper.selectOne(car);
+            Employee employee = this.employeeMapper.selectByPrimaryKey(orderVo.getEmpId());
 
-        Employee employee = this.employeeMapper.selectByPrimaryKey(orderVo.getEmpId());
-
-        if (car != null) {
-            order.setCarId(car.getId());
-            order.setGmtCreate(new Date());
-            order.setOrderPrice(project.getPrice());
-            order.setProjectId(project.getId());
-            order.setProjectName(project.getName());
-            order.setUserId(userInfo.getId());
-            order.setEmpId(employee.getId());
-            order.setEmpName(employee.getUsername());
-            this.orderMapper.insertSelective(order);
-            return order;
-        } else {
-            return null;
+            if (car != null) {
+                order.setCarId(car.getId());
+                order.setGmtCreate(new Date());
+                order.setOrderPrice(project.getPrice());
+                order.setProjectId(project.getId());
+                order.setProjectName(project.getName());
+                order.setUserId(userInfo.getId());
+                order.setEmpId(employee.getId());
+                order.setEmpName(employee.getUsername());
+                this.orderMapper.insertSelective(order);
+                return order;
+            } else {
+                return null;
+            }
+        } catch (Exception ex) {
+            throw new BusinessException();
         }
     }
 
     @Override
-    public StoreVo getGeo(OrderVo.Store store) {
-        OrderVo.Store storeTmp = this.storeMapper.selectNearByStore(store);
-        StoreVo storeVo = new StoreVo();
-        storeVo.setLatitude(storeTmp.getLatitude());
-        storeVo.setLongitude(storeTmp.getLongitude());
-        storeVo.setStoreName(storeTmp.getStoreName());
+    public StoreVo getGeo(Store store) {
+        try {
+            Store storeTmp = this.storeMapper.selectNearByStore(store);
+            StoreVo storeVo = new StoreVo();
+            storeVo.setLatitude(storeTmp.getLatitude());
+            storeVo.setLongitude(storeTmp.getLongitude());
+            storeVo.setStoreName(storeTmp.getStoreName());
 
-        if (storeTmp != null) {
-            double distance = MapUtils.GetDistance(store.getLatitude(), store.getLongitude(), storeTmp.getLatitude(),
-                                                   storeTmp.getLongitude());
-            storeVo.setDistance(distance);
+            if (storeTmp != null) {
+                double distance =
+                        MapUtils.GetDistance(store.getLatitude(), store.getLongitude(), storeTmp.getLatitude(),
+                                             storeTmp.getLongitude());
+                storeVo.setDistance(distance);
+            }
+            return storeVo;
+        } catch (Exception ex) {
+            throw new BusinessException();
         }
-        return storeVo;
+    }
+
+    @Override
+    public List<Brand> getCarType(Integer type) {
+        try {
+            if (type == 1) {
+                Example example = new Example(Brand.class);
+                example.createCriteria().andEqualTo("recommend", 1).andEqualTo("parentId", 0);
+                return this.brandMapper.selectByExample(example);
+            } else {
+                Example example = new Example(Brand.class);
+                example.createCriteria().andEqualTo("parentId", 0);
+                return this.brandMapper.selectByExample(example);
+            }
+        } catch (Exception ex) {
+            throw new BusinessException();
+        }
+    }
+
+    @Override
+    public List<Brand> getCarTypeParent(Long parentId) {
+        try {
+            Example example = new Example(Brand.class);
+            example.createCriteria().andEqualTo("parentId", parentId);
+            return this.brandMapper.selectByExample(example);
+        } catch (Exception ex) {
+            throw new BusinessException();
+        }
     }
 }
