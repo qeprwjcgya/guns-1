@@ -24,6 +24,7 @@ public class SmsDto {
     private Integer type;
     private String content;
     private String openid;
+    private String ip;
 
     public String getPhone() {
         return phone;
@@ -63,5 +64,13 @@ public class SmsDto {
 
     public void setOpenid(String openid) {
         this.openid = openid;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

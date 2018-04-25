@@ -121,11 +121,11 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>${pagehelper-starter.version}</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>com.alibaba</groupId>-->
-        <!--<artifactId>fastjson</artifactId>-->
-        <!--<version>${fastjson.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>

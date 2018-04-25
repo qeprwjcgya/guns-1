@@ -49,9 +49,9 @@ public class SmsServiceImpl implements SmsService {
     public void sendVerifySMS(SmsDto smsDto) {
         try {
             // 验证发送短信前的验证码，为空则不验证（老接口）
-            String preKey = null;
+            String token = null;
             Cache<String, String> cache = SmsCache.CACHE.getCache();
-            if ((preKey = cache.getIfPresent(smsDto.getCode().toUpperCase())) == null) {
+            if ((token = cache.getIfPresent(smsDto.getCode().toUpperCase())) == null) {
                 throw new BusinessException("图片验证码失效,请获取后重新输入");
             }
             if (!isMobileNO(smsDto.getPhone())) {
@@ -76,8 +76,8 @@ public class SmsServiceImpl implements SmsService {
             // 发送手机短信
             sendMsg(smsDto);
             // 删除发送前置验证码
-            if (preKey != null) {
-                cache.invalidate(preKey);
+            if (token != null) {
+                cache.invalidate(smsDto.getIp());
             }
         } catch (Exception ex) {
             throw new BusinessException();
