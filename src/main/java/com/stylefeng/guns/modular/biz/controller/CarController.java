@@ -47,7 +47,11 @@ public class CarController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-
+    /**
+     * 添加车辆基本信息
+     * @param carVo
+     * @return
+     */
     @PostMapping("/wechat/car/addCarInfo")
     public ResponseEntity insertCarInfo(CarVo carVo) {
         carVo.setId(PKGenerator.getInstance().generateKey());
@@ -55,19 +59,56 @@ public class CarController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-
+    /**
+     * 根据经纬度查询最近的店铺
+     *
+     * @param store
+     * @return
+     */
     @GetMapping("/wechat/car/geo")
     public ResponseEntity getGeo(Store store) {
         return new ResponseEntity(carService.getGeo(store), HttpStatus.OK);
     }
 
+    /**
+     * 是否推荐类型(1:推荐;2:否)
+     *
+     * @return
+     */
     @GetMapping("/wechat/car/getCarType")
     public ResponseEntity getCarType(@RequestParam("type") Integer type) {
         return new ResponseEntity(carService.getCarType(type), HttpStatus.OK);
     }
 
+    /**
+     * 查询父id车型对应的节点
+     *
+     * @param parentId
+     * @return
+     */
     @GetMapping("/wechat/car/getCarTypeParent")
-    public ResponseEntity getCarTypeParent(@RequestParam("parentId") Long parentId){
-        return  new ResponseEntity(carService.getCarTypeParent(parentId),HttpStatus.OK);
+    public ResponseEntity getCarTypeParent(@RequestParam("parentId") Long parentId) {
+        return new ResponseEntity(carService.getCarTypeParent(parentId), HttpStatus.OK);
+    }
+
+    /**
+     * 查询所有保险公司
+     *
+     * @return
+     */
+    @GetMapping("/wechat/car/getInCompany")
+    public ResponseEntity getInCompany() {
+        return new ResponseEntity(carService.getInCompany(), HttpStatus.OK);
+    }
+
+    /**
+     * 根据父级ID查询 车牌
+     *
+     * @param parentId
+     * @return
+     */
+    @GetMapping("/wechat/car/getPlatesNumber")
+    public ResponseEntity getPlatesNumber(@RequestParam("parentId") Long parentId) {
+        return new ResponseEntity(carService.getPlatesNumber(parentId), HttpStatus.OK);
     }
 }

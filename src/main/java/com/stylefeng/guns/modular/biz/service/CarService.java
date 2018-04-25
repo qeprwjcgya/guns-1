@@ -1,9 +1,6 @@
 package com.stylefeng.guns.modular.biz.service;
 
-import com.stylefeng.guns.modular.biz.model.Brand;
-import com.stylefeng.guns.modular.biz.model.Car;
-import com.stylefeng.guns.modular.biz.model.Order;
-import com.stylefeng.guns.modular.biz.model.Store;
+import com.stylefeng.guns.modular.biz.model.*;
 import com.stylefeng.guns.modular.biz.util.IService;
 import com.stylefeng.guns.modular.biz.vo.CarVo;
 import com.stylefeng.guns.modular.biz.vo.OrderVo;
@@ -44,6 +41,7 @@ public interface CarService extends IService<Car> {
 
     /**
      * 根据经纬度查询最近的店铺
+     *
      * @param store
      * @return
      */
@@ -51,15 +49,33 @@ public interface CarService extends IService<Car> {
 
     /**
      * 是否推荐类型
+     *
      * @return
      */
     List<Brand> getCarType(Integer type);
 
     /**
-     * 查询父id对应的节点
+     * 查询父id车型对应的节点
+     *
      * @param parentId
      * @return
      */
-    public List<Brand> getCarTypeParent(Long parentId);
+    List<Brand> getCarTypeParent(Long parentId);
+
+
+    /**
+     * 查询所有保险公司
+     *
+     * @return
+     */
+    List<InsuranceCompany> getInCompany();
+
+    /**
+     * 根据父级ID查询 车牌
+     *
+     * @param parentId
+     * @return
+     */
+    List<PlatesNumber> getPlatesNumber(Long parentId);
 
 }

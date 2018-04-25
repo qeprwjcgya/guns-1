@@ -29,6 +29,8 @@ public class InsuranceCompany implements Serializable {
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name = "parent_id")
+    private Long parentId;
 
     public Long getId() {
         return id;
@@ -44,5 +46,13 @@ public class InsuranceCompany implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 }

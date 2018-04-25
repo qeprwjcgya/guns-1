@@ -52,6 +52,10 @@ public class CarServiceImpl extends BaseService<Car> implements CarService {
     private OrderMapper orderMapper;
     @Autowired
     private StoreMapper storeMapper;
+    @Autowired
+    private InsuranceCompanyMapper insuranceCompanyMapper;
+    @Autowired
+    private PlatesNumberMapper platesNumberMapper;
 
     @Override
     public boolean insertCarInfo(CarVo carVo) {
@@ -152,6 +156,26 @@ public class CarServiceImpl extends BaseService<Car> implements CarService {
             Example example = new Example(Brand.class);
             example.createCriteria().andEqualTo("parentId", parentId);
             return this.brandMapper.selectByExample(example);
+        } catch (Exception ex) {
+            throw new BusinessException();
+        }
+    }
+
+    @Override
+    public List<InsuranceCompany> getInCompany() {
+        try {
+            return this.insuranceCompanyMapper.selectAll();
+        } catch (Exception ex) {
+            throw new BusinessException();
+        }
+    }
+
+    @Override
+    public List<PlatesNumber> getPlatesNumber(Long parentId) {
+        try {
+            Example example = new Example(PlatesNumber.class);
+            example.createCriteria().andEqualTo("parentId", parentId);
+            return this.platesNumberMapper.selectByExample(parentId);
         } catch (Exception ex) {
             throw new BusinessException();
         }

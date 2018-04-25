@@ -31,6 +31,9 @@ public class PlatesNumber implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "parent_id")
+    private String parentId;
+
     public Long getId() {
         return id;
     }
@@ -45,5 +48,13 @@ public class PlatesNumber implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }
