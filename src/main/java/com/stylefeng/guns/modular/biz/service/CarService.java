@@ -49,7 +49,7 @@ public interface CarService extends IService<Car> {
 
     /**
      * 是否推荐类型
-     *
+     * @param type
      * @return
      */
     List<Brand> getCarType(Integer type);

@@ -111,4 +111,14 @@ public class CarController {
     public ResponseEntity getPlatesNumber(@RequestParam("parentId") Long parentId) {
         return new ResponseEntity(carService.getPlatesNumber(parentId), HttpStatus.OK);
     }
+
+    /**
+     * 获取车辆列表
+     * @param opendId
+     * @return
+     */
+    @GetMapping("/wechat/car/getCarList")
+    public ResponseEntity getCarList(@RequestParam String opendId){
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

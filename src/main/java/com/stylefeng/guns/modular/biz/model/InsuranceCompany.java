@@ -24,35 +24,46 @@ import java.io.Serializable;
  */
 @Table(name = "insurance_company")
 public class InsuranceCompany implements Serializable {
+
     @Id
     @Column(name = "id")
-    private Long id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "parent_id")
-    private Long parentId;
+    private Integer id;
+    @Column(name = "company_name")
+    private String companyName;
+    @Column(name = "phone")
+    private String phone;
+    @Column(name = "sort")
+    private Integer sort;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }

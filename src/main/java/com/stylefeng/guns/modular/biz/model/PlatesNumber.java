@@ -27,18 +27,21 @@ public class PlatesNumber implements Serializable {
 
     @Id
     @Column(name = "id")
-    private Long id;
+    private Integer id;
     @Column(name = "name")
     private String name;
 
     @Column(name = "parent_id")
-    private String parentId;
+    private Integer parentId;
 
-    public Long getId() {
+    @Column(name = "fw")
+    private String fw;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,11 +53,19 @@ public class PlatesNumber implements Serializable {
         this.name = name;
     }
 
-    public String getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public String getFw() {
+        return fw;
+    }
+
+    public void setFw(String fw) {
+        this.fw = fw;
     }
 }

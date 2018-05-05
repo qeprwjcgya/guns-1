@@ -28,10 +28,10 @@ public class Brand implements Serializable {
 
     @Id
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "parent_id")
-    private Long parentId;
+    private Integer parentId;
     /**
      * 品牌名称
      */
@@ -46,12 +46,12 @@ public class Brand implements Serializable {
      * 排序
      */
     @Column(name = "brand_sort")
-    private String brandSort;
+    private Integer brandSort;
     /**
      * 层级
      */
     @Column(name = "brand_level")
-    private String brandLevel;
+    private Integer brandLevel;
     /**
      * 创建时间
      */
@@ -64,19 +64,25 @@ public class Brand implements Serializable {
     @Column(name = "recommend")
     private Integer recommend;
 
-    public Long getId() {
+    /**
+     * 首字母大写
+     */
+    @Column(name = "first_word")
+    private String firstWord;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
@@ -96,27 +102,43 @@ public class Brand implements Serializable {
         this.brandLogo = brandLogo;
     }
 
-    public String getBrandSort() {
-        return brandSort;
-    }
-
-    public void setBrandSort(String brandSort) {
-        this.brandSort = brandSort;
-    }
-
-    public String getBrandLevel() {
-        return brandLevel;
-    }
-
-    public void setBrandLevel(String brandLevel) {
-        this.brandLevel = brandLevel;
-    }
-
     public Date getGmtCreate() {
         return gmtCreate;
     }
 
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
+    }
+
+    public Integer getRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(Integer recommend) {
+        this.recommend = recommend;
+    }
+
+    public String getFirstWord() {
+        return firstWord;
+    }
+
+    public void setFirstWord(String firstWord) {
+        this.firstWord = firstWord;
+    }
+
+    public Integer getBrandSort() {
+        return brandSort;
+    }
+
+    public void setBrandSort(Integer brandSort) {
+        this.brandSort = brandSort;
+    }
+
+    public Integer getBrandLevel() {
+        return brandLevel;
+    }
+
+    public void setBrandLevel(Integer brandLevel) {
+        this.brandLevel = brandLevel;
     }
 }

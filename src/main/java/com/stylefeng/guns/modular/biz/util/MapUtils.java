@@ -47,7 +47,8 @@ public class MapUtils {
 
 
     public static void main(String[] args) {
-        System.out.println(MapUtils.GetDistance(29.490295, 106.486654, 29.615467, 106.581515));
+        System.out.println(MapUtils.GetDistance(29.615202, 106.510830, 29.615131, 106.510859));
     }
+
 }
 

@@ -46,7 +46,7 @@ public class SmsController {
      * @param codeLength 长度，默认5位
      * @return {@link CaptchaUtil#getEncryptRandomCode(String)}
      */
-    @GetMapping(path = "/user/preSMS")
+    @GetMapping(path = "/car/user/preSMS")
     public ResponseEntity<String> preSMS(@RequestParam(defaultValue = "5") Integer codeLength,
                                          HttpServletRequest request) {
 
@@ -63,7 +63,7 @@ public class SmsController {
      *
      * @return ResponseEntity<String>
      */
-    @PostMapping(path = "/user/smsCode")
+    @PostMapping(path = "/car/user/smsCode")
     public ResponseEntity smsCode(SmsDto smsDto, HttpServletRequest request) {
         Assert.isTrue(smsDto.getCode() != null && StrUtil.isNotBlank(smsDto.getCode().toString()), "验证码为空");
         smsDto.setIp(IPUtils.getRealIp(request));
@@ -77,6 +77,7 @@ public class SmsController {
      * @param smsDto
      * @return
      */
+    @PostMapping("/car/user/bind")
     public ResponseEntity bindUserInfo(SmsDto smsDto) {
         Assert.notEmpty(smsDto.getOpenid(), "程序出错.");
         Assert.notEmpty(smsDto.getCode(), "验证码不能为空");
