@@ -1,16 +1,14 @@
 package com.stylefeng.guns.modular.biz.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.stylefeng.guns.modular.biz.controller.data.CompanyList;
-import com.stylefeng.guns.modular.biz.controller.data.HttpClientUtil;
-import com.stylefeng.guns.modular.biz.controller.data.TypeList;
-import com.stylefeng.guns.modular.biz.controller.data.TypeModel;
+import com.stylefeng.guns.modular.biz.controller.data.*;
 import com.stylefeng.guns.modular.biz.dao.BrandMapper;
 import com.stylefeng.guns.modular.biz.dao.InsuranceCompanyMapper;
 import com.stylefeng.guns.modular.biz.dao.PlatesNumberMapper;
 import com.stylefeng.guns.modular.biz.model.Brand;
 import com.stylefeng.guns.modular.biz.model.InsuranceCompany;
 import com.stylefeng.guns.modular.biz.model.PlatesNumber;
+import com.stylefeng.guns.modular.biz.util.PKGenerator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,7 +16,6 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -48,7 +45,7 @@ public class DataController {
     @Autowired
     private InsuranceCompanyMapper companyMapper;
 
-    @GetMapping("/wechat/data/type")
+    //    @GetMapping("/wechat/data/type")
     public ResponseEntity setData() {
         try {
             String url =
@@ -80,7 +77,7 @@ public class DataController {
         }
     }
 
-    @GetMapping("/wechat/data/carNumber")
+    //    @GetMapping("/wechat/data/carNumber")
     public ResponseEntity getCarNumber() {
         try {
             String url =
@@ -96,7 +93,7 @@ public class DataController {
 
                 System.out.println(arr[0] + "--" + arr[1]);
                 PlatesNumber number1 = new PlatesNumber();
-                number1.setId(id++);
+                number1.setId(++id);
                 number1.setFw(arr[0]);
                 number1.setName(arr[1]);
                 number1.setParentId(0);
@@ -111,11 +108,11 @@ public class DataController {
                 Elements tmpRows = tmpDoc.select("span[class=text]");
                 for (Element tmpRow : tmpRows) {
                     PlatesNumber tmpNumber = new PlatesNumber();
-                    tmpNumber.setId(id++);
+                    tmpNumber.setId(++id);
                     tmpNumber.setName(tmpRow.html());
                     tmpNumber.setParentId(number1.getId());
                     tmpNumber.setFw(arr[0]);
-                    numberMapper.insertSelective(number1);
+                    numberMapper.insertSelective(tmpNumber);
                 }
             }
             return new ResponseEntity(HttpStatus.OK);
@@ -124,7 +121,7 @@ public class DataController {
         }
     }
 
-    @GetMapping("/wechat/car/company")
+    //    @GetMapping("/wechat/car/company")
     public ResponseEntity getCompanyData() {
         try {
             String url =
@@ -143,15 +140,31 @@ public class DataController {
 
 
     private Brand convertBrand(TypeModel model, int level, int sort, int parentId) {
+        //        https://jmall.oss-cn-hangzhou.aliyuncs.com/shop/0015TPI811.jpg
+        String path = "D:\\test\\car\\";
         Brand brand = new Brand();
         brand.setId(model.getId());
         brand.setFirstWord(model.getFw());
-        brand.setBrandLogo(model.getLg());
+        String extension = model.getLg().endsWith(".jpg") ? ".jpg" : ".png";
+
+        String fileName = PKGenerator.getInstance().generateKey() + extension;
+
+        DownloadPicFromURL.downloadPicture(model.getLg(), path + fileName);
+
+        try {
+            Thread.sleep(1000);
+        } catch (Exception ex) {
+
+        }
+
+        brand.setBrandLogo("https://jmall.oss-cn-hangzhou.aliyuncs.com/car/" + fileName);
         brand.setBrandName(model.getName());
         brand.setBrandLevel(level);
         brand.setBrandSort(sort);
         brand.setParentId(parentId);
         return brand;
     }
+
+
 
 }

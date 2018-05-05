@@ -6,12 +6,15 @@ import java.net.URL;
 
 public class DownloadPicFromURL {
     public static void main(String[] args) {
-        String url = "http://192.168.1.158/estun_cs/banner_img/head_pic.jpg";
-        String path="d:/test/pic.jpg";
-        downloadPicture(url,path);
+        String url = "https://jmall.oss-cn-hangzhou.aliyuncs.com/shop/0015TPI811.jpg";
+        String path = "D:\\test\\car\\1.jpg";
+        downloadPicture(url, path);
     }
-    //链接url下载图片
-    private static void downloadPicture(String urlList,String path) {
+
+    /**
+     * 链接url下载图片
+     */
+    public static void downloadPicture(String urlList, String path) {
         URL url = null;
         try {
             url = new URL(urlList);

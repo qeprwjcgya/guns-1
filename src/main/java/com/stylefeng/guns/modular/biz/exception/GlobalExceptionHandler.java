@@ -29,7 +29,7 @@ import java.util.Map;
  * @version 1.0.0, 2018-03-02 11:56
  */
 @RestControllerAdvice
-@Component
+@Component("carGlobalExceptionHandler")
 public class GlobalExceptionHandler {
     /**
      * feign调用异常栈，一般在 DynamicHeaderRegistry#getAllHeaders 中设置
