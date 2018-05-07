@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.biz.model;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +26,7 @@ import java.util.Date;
 @Table(name = "rcwl_user")
 public class UserInfo implements Serializable {
 
+    @Id
     @Column(name = "id")
     private Long id;
     /**

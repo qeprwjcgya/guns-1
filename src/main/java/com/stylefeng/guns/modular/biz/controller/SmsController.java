@@ -13,9 +13,13 @@ import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
 
 /**
  * <p>Description: </p>
@@ -43,20 +47,18 @@ public class SmsController {
     /**
      * 发送短信前获取混淆验证码，默认5分钟有效
      *
-     * @param codeLength 长度，默认5位
      * @return {@link CaptchaUtil#getEncryptRandomCode(String)}
      */
     @GetMapping(path = "/car/user/preSMS")
-    public ResponseEntity<String> preSMS(@RequestParam(defaultValue = "5") Integer codeLength,
-                                         HttpServletRequest request) {
+    public ResponseEntity<String> preSMS(HttpServletRequest request) {
 
+        int codeLength = new Random().nextInt(5) + 5;
         String code = CaptchaUtil.getRandomCode(codeLength);
-        String key = MD5Util.encrypt(code).toUpperCase();
-
+        String key = MD5Util.encrypt(code.toLowerCase()).toUpperCase();
+        System.err.println(key);
         SmsCache.CACHE.getCache().put(IPUtils.getRealIp(request), JSON.toJSONString(new SmsToken(key)));
         return new ResponseEntity<>(CaptchaUtil.getEncryptRandomCode(code), HttpStatus.OK);
     }
-
 
     /**
      * 发送短信
@@ -64,8 +66,11 @@ public class SmsController {
      * @return ResponseEntity<String>
      */
     @PostMapping(path = "/car/user/smsCode")
-    public ResponseEntity smsCode(SmsDto smsDto, HttpServletRequest request) {
-        Assert.isTrue(smsDto.getCode() != null && StrUtil.isNotBlank(smsDto.getCode().toString()), "验证码为空");
+    public ResponseEntity smsCode(@RequestBody SmsDto smsDto, HttpServletRequest request) {
+        Assert.isTrue(smsDto.getCode() != null && StrUtil.isNotBlank(smsDto.getCode()), "验证码为空");
+        Assert.isTrue(smsDto.getOpenid() != null && StrUtil.isNotBlank(smsDto.getOpenid()), "openid不能为空");
+        Assert.isTrue(smsDto.getPhone() != null && StrUtil.isNotBlank(smsDto.getPhone()), "电话号码不能为空");
+
         smsDto.setIp(IPUtils.getRealIp(request));
         smsService.sendVerifySMS(smsDto);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -78,10 +83,11 @@ public class SmsController {
      * @return
      */
     @PostMapping("/car/user/bind")
-    public ResponseEntity bindUserInfo(SmsDto smsDto) {
+    public ResponseEntity bindUserInfo(@RequestBody SmsDto smsDto) {
         Assert.notEmpty(smsDto.getOpenid(), "程序出错.");
         Assert.notEmpty(smsDto.getCode(), "验证码不能为空");
         Assert.notEmpty(smsDto.getPhone(), "电话号码不能为空");
+        smsService.bindUserInfo(smsDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

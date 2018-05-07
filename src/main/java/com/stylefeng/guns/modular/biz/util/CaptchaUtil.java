@@ -31,6 +31,7 @@ public abstract class CaptchaUtil {
    */
   public static String getRandomCode(int length) {
     Assert.isTrue(length > 0, "randomCode长度须大于零");
+
     StringBuffer code = new StringBuffer();
     for (int i = 0; i < length; i++) {
       code.append(getRandomString(random.get().nextInt(RANDOM_STRS.length())));

@@ -1,9 +1,5 @@
 package com.stylefeng.guns.modular.biz.util;
 
-import com.xiaoleilu.hutool.http.HttpRequest;
-
-import java.util.UUID;
-
 /**
  * <p>Description: </p>
  * <p>Copyright(c) 2015-2016 cadyd.com Inc. All Rights Reserved.</p>
@@ -24,42 +20,48 @@ import java.util.UUID;
 public class test {
     public static void main(String[] args) {
 
+        String value = "YXFu4UfFQAcJCEXS4HZRHevpV7PkKT2khgK9995955";
+        int length = Integer.valueOf(value.substring(value.length() - 1));
+        int index = Integer.valueOf(value.substring(value.length() - 2, value.length() - 1));
 
-        String nonce = UUID.randomUUID().toString();
-        String timestamp = System.currentTimeMillis() + "";
-        for (int index = 0; index < 100; index++) {
-            final int finalIndex = index;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-
-                    for (int i = 0; i < 10; i++) {
-
-                        if (i % 2000 == 0) {
-                            System.out.println(finalIndex + "--------------" + i);
-                        }
+        System.out.println(MD5Util.md5( value.substring(index,index+length).toLowerCase()).toUpperCase());
 
 
-                        StringBuffer buffer = new StringBuffer();
-                        buffer.append("GET").append("\n");
-                        buffer.append("x-ca-nonce:").append(nonce).append("\n");
-                        buffer.append("x-ca-timestamp:").append(timestamp).append("\n");
-                        buffer.append("/user/homePage");
-
-
-                        //链式构建请求
-                        String result2 = HttpRequest.get("http://192.168.200.223:10020/user/homePage")
-                                                    .header("x-ca-nonce", nonce).header("x-ca-timestamp", timestamp)
-                                                    .header("x-ca-platform", "h5").header("x-ca-signature",
-                                                                                          MD5Util1.toMD5(MD5Util1.toMD5(
-                                                                                                  buffer.toString())
-                                                                                                         + "$lw1XRJhQ#ys2q"))
-                                                    .execute().body();
-                        System.err.println(result2);
-
-                    }
-                }
-            }).start();
-        }
+        //        String nonce = UUID.randomUUID().toString();
+        //        String timestamp = System.currentTimeMillis() + "";
+        //        for (int index = 0; index < 100; index++) {
+        //            final int finalIndex = index;
+        //            new Thread(new Runnable() {
+        //                @Override
+        //                public void run() {
+        //
+        //                    for (int i = 0; i < 10; i++) {
+        //
+        //                        if (i % 2000 == 0) {
+        //                            System.out.println(finalIndex + "--------------" + i);
+        //                        }
+        //
+        //
+        //                        StringBuffer buffer = new StringBuffer();
+        //                        buffer.append("GET").append("\n");
+        //                        buffer.append("x-ca-nonce:").append(nonce).append("\n");
+        //                        buffer.append("x-ca-timestamp:").append(timestamp).append("\n");
+        //                        buffer.append("/user/homePage");
+        //
+        //
+        //                        //链式构建请求
+        //                        String result2 = HttpRequest.get("http://192.168.200.223:10020/user/homePage")
+        //                                                    .header("x-ca-nonce", nonce).header("x-ca-timestamp", timestamp)
+        //                                                    .header("x-ca-platform", "h5").header("x-ca-signature",
+        //                                                                                          MD5Util1.toMD5(MD5Util1.toMD5(
+        //                                                                                                  buffer.toString())
+        //                                                                                                         + "$lw1XRJhQ#ys2q"))
+        //                                                    .execute().body();
+        //                        System.err.println(result2);
+        //
+        //                    }
+        //                }
+        //            }).start();
+        //        }
     }
 }

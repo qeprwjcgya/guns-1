@@ -51,7 +51,7 @@ public class SmsServiceImpl implements SmsService {
             // 验证发送短信前的验证码，为空则不验证（老接口）
             String token = null;
             Cache<String, String> cache = SmsCache.CACHE.getCache();
-            if ((token = cache.getIfPresent(smsDto.getCode().toUpperCase())) == null) {
+            if ((token = cache.getIfPresent(smsDto.getIp())) == null) {
                 throw new BusinessException("图片验证码失效,请获取后重新输入");
             }
             if (!isMobileNO(smsDto.getPhone())) {
@@ -60,26 +60,32 @@ public class SmsServiceImpl implements SmsService {
             String code = new Random().nextInt(999999) + "";
 
 
-            UserInfo userInfo = userInfoMapper.selectByPrimaryKey(smsDto.getPhone());
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserOpenid(smsDto.getOpenid());
+            userInfo = userInfoMapper.selectOne(userInfo);
+
             // 注册
-            if (null != userInfo && smsDto.getType() == 1) {
-                throw new BusinessException("对不起，手机号已经注册过!");
+            if (null == userInfo) {
+                throw new BusinessException("对不起,你没关注公众号!");
             }
             // 找回密码
-            if (null == userInfo && smsDto.getType() == 2) {
-                throw new BusinessException("对不起，该用户不存在!");
-            }
+            //            if (null == userInfo && smsDto.getType() == 2) {
+            //                throw new BusinessException("对不起，该用户不存在!");
+            //            }
 
             cache.put(smsDto.getPhone(), code);
 
-            smsDto.setContent("验证码为" + code + "，请在页面中输入以完成验证");
+            System.out.println("code:" + code);
+
+            smsDto.setContent("验证码为" + code + ",请在页面中输入以完成验证");
             // 发送手机短信
-            sendMsg(smsDto);
+            sendMsg(cache, smsDto);
             // 删除发送前置验证码
             if (token != null) {
                 cache.invalidate(smsDto.getIp());
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new BusinessException();
         }
     }
@@ -87,9 +93,16 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public void bindUserInfo(SmsDto smsDto) {
         try {
-            UserInfo userInfo = userInfoMapper.selectByPrimaryKey(smsDto.getOpenid());
-            userInfo.setUserPhone(smsDto.getPhone());
-            this.userInfoMapper.insertSelective(userInfo);
+            Cache<String, String> cache = SmsCache.CACHE.getCache();
+            String code = cache.getIfPresent(smsDto.getPhone());
+            if (code != null && smsDto.getCode() != null && code.equals(smsDto.getCode())) {
+                UserInfo userInfo = new UserInfo();
+                userInfo.setUserOpenid(smsDto.getOpenid());
+                userInfo = userInfoMapper.selectOne(userInfo);
+                userInfo.setUserPhone(smsDto.getPhone());
+                this.userInfoMapper.updateByPrimaryKeySelective(userInfo);
+                cache.invalidate(smsDto.getPhone());
+            }
         } catch (Exception ex) {
             throw new BusinessException();
         }
@@ -101,8 +114,8 @@ public class SmsServiceImpl implements SmsService {
         return m.matches();
     }
 
-    public void sendMsg(SmsDto dto) {
-
+    public void sendMsg(Cache<String, String> cache, SmsDto dto) {
+        //调用运营商接口
     }
 
 }

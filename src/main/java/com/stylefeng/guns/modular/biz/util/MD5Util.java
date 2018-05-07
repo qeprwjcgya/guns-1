@@ -110,25 +110,5 @@ public class MD5Util {
         headerPrefixList.add("2");
 
 
-//        for (int index = 0; index < 1000; index++) {
-//            final int finalIndex = index;
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Collections.sort(headerPrefixList);
-//
-//                    for (int i = 0; i < 1000000; i++) {
-//
-////                        if (i % 2000 == 0) {
-////                            System.out.println(finalIndex + "--------------" + i);
-////                        }
-////                        if (!md5Value.equals(MD5Util1.toMD5(buffer.toString()))) {
-////                            System.err.println(false);
-////                        }
-//                    }
-//                }
-//            }).start();
-//        }
-
     }
 }
