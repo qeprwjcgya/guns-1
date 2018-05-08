@@ -78,4 +78,11 @@ public interface CarService extends IService<Car> {
      */
     List<PlatesNumber> getPlatesNumber(Long parentId);
 
+    /**
+     * 查询当前openId对应的车辆列表
+     * @param openid
+     * @return
+     */
+    List<Car> getCarList(String openid);
+
 }

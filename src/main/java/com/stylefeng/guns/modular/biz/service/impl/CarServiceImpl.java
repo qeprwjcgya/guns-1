@@ -10,7 +10,6 @@ import com.stylefeng.guns.modular.biz.util.PKGenerator;
 import com.stylefeng.guns.modular.biz.vo.CarVo;
 import com.stylefeng.guns.modular.biz.vo.OrderVo;
 import com.stylefeng.guns.modular.biz.vo.StoreVo;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -60,16 +59,22 @@ public class CarServiceImpl extends BaseService<Car> implements CarService {
     @Override
     public boolean insertCarInfo(CarVo carVo) {
         try {
-            Car car = new Car();
-            try {
-                BeanUtils.copyProperties(car, carVo);
-            } catch (Exception ex) {
+            Car car = carVo.cloneCar();
+            Brand brand = this.brandMapper.selectByPrimaryKey(carVo.getCarSeries());
+            InsuranceCompany company = this.insuranceCompanyMapper.selectByPrimaryKey(carVo.getCarInsuranceCompanyId());
+            PlatesNumber carNumber = this.platesNumberMapper.selectByPrimaryKey(carVo.getCarNumberRegion());
 
+            if (brand != null && company != null && carNumber != null) {
+                return false;
             }
-
-            UserInfo user = this.userInfoMapper.selectByPrimaryKey(carVo.getOpenid());
-            car.setUserId(user.getId());
-            car.setUserId(PKGenerator.getInstance().generateKey());
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserOpenid(carVo.getOpenid());
+            userInfo = this.userInfoMapper.selectOne(userInfo);
+            car.setUserId(userInfo.getId());
+            car.setId(PKGenerator.getInstance().generateKey());
+            car.setCarSeriesName(brand.getBrandName());
+            car.setCarInsuranceCompany(company.getCompanyName());
+            car.setCarNumberStart(carNumber.getName());
             car.setGmtCreate(new Date());
             int result = carMapper.insertSelective(car);
             return result > 0 ? true : false;
@@ -176,6 +181,21 @@ public class CarServiceImpl extends BaseService<Car> implements CarService {
             Example example = new Example(PlatesNumber.class);
             example.createCriteria().andEqualTo("parentId", parentId);
             return this.platesNumberMapper.selectByExample(parentId);
+        } catch (Exception ex) {
+            throw new BusinessException();
+        }
+    }
+
+    @Override
+    public List<Car> getCarList(String openid) {
+        try {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserOpenid(openid);
+            userInfo = this.userInfoMapper.selectOne(userInfo);
+
+            Car car = new Car();
+            car.setUserId(userInfo.getId());
+            return  this.carMapper.select(car);
         } catch (Exception ex) {
             throw new BusinessException();
         }

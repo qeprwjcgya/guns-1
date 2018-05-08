@@ -21,7 +21,7 @@ public class OrderVo {
     private String openid;
     private String projectId;
     private Long empId;
-    private Long carRegion;
+    private Integer carRegion;
     private String carNumber;
 
     public String getOpenid() {
@@ -48,14 +48,6 @@ public class OrderVo {
         this.empId = empId;
     }
 
-    public Long getCarRegion() {
-        return carRegion;
-    }
-
-    public void setCarRegion(Long carRegion) {
-        this.carRegion = carRegion;
-    }
-
     public String getCarNumber() {
         return carNumber;
     }
@@ -64,4 +56,11 @@ public class OrderVo {
         this.carNumber = carNumber;
     }
 
+    public Integer getCarRegion() {
+        return carRegion;
+    }
+
+    public void setCarRegion(Integer carRegion) {
+        this.carRegion = carRegion;
+    }
 }

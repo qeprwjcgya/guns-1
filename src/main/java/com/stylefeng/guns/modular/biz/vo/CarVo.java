@@ -1,6 +1,8 @@
 package com.stylefeng.guns.modular.biz.vo;
 
+import com.alibaba.fastjson.JSON;
 import com.stylefeng.guns.modular.biz.model.Car;
+import java.util.Date;
 
 /**
  * <p>Description: </p>
@@ -47,4 +49,17 @@ public class CarVo extends Car {
         car.setUserId(getUserId());
         return car;
     }
+
+    public static void main(String[] args) {
+        CarVo vo = new CarVo();
+        vo.setOpenid("ODKLSOWEIFszdCDSDPOdasdfawe");
+        vo.setCarSeries(11);
+        vo.setCarNumberRegion(12);
+        vo.setCarNumberEnd("BM760");
+        vo.setCarUserName("Bean");
+        vo.setCarInsuranceTime(new Date());
+        vo.setCarInsuranceCompanyId(43);
+        System.out.println(JSON.toJSONString(vo));
+    }
+
 }

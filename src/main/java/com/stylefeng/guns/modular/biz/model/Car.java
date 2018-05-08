@@ -33,17 +33,23 @@ public class Car implements Serializable {
      * 车系列
      */
     @Column(name = "car_series")
-    private Long carSeries;
+    private Integer carSeries;
+
+    /**
+     * 系列名称
+     */
+    @Column(name = "car_series_name")
+    private String carSeriesName;
     /**
      * 车型
      */
     @Column(name = "car_type")
-    private Long carType;
+    private Integer carType;
     /**
      * 牌照所属区域(渝A)ID
      */
     @Column(name = "car_number_region")
-    private Long carNumberRegion;
+    private Integer carNumberRegion;
 
     /**
      * 牌照所属区域(渝A)
@@ -64,18 +70,18 @@ public class Car implements Serializable {
      * 投保时间
      */
     @Column(name = "car_insurance_time")
-    private Date carInsuranceTime;
+    private String carInsuranceTime;
 
     /**
      * 保险公司ID
      */
     @Column(name = "car_insurance_company_id")
-    private Long carInsuranceCompanyId;
+    private Integer carInsuranceCompanyId;
     /**
      * 保险公司
      */
     @Column(name = "car_insurance_company")
-    private Long carInsuranceCompany;
+    private String carInsuranceCompany;
     /**
      * 创建时间
      */
@@ -101,27 +107,27 @@ public class Car implements Serializable {
         this.id = id;
     }
 
-    public Long getCarSeries() {
+    public Integer getCarSeries() {
         return carSeries;
     }
 
-    public void setCarSeries(Long carSeries) {
+    public void setCarSeries(Integer carSeries) {
         this.carSeries = carSeries;
     }
 
-    public Long getCarType() {
+    public Integer getCarType() {
         return carType;
     }
 
-    public void setCarType(Long carType) {
+    public void setCarType(Integer carType) {
         this.carType = carType;
     }
 
-    public Long getCarNumberRegion() {
+    public Integer getCarNumberRegion() {
         return carNumberRegion;
     }
 
-    public void setCarNumberRegion(Long carNumberRegion) {
+    public void setCarNumberRegion(Integer carNumberRegion) {
         this.carNumberRegion = carNumberRegion;
     }
 
@@ -149,19 +155,35 @@ public class Car implements Serializable {
         this.carUserName = carUserName;
     }
 
-    public Date getCarInsuranceTime() {
+    public String getCarSeriesName() {
+        return carSeriesName;
+    }
+
+    public void setCarSeriesName(String carSeriesName) {
+        this.carSeriesName = carSeriesName;
+    }
+
+    public String getCarInsuranceTime() {
         return carInsuranceTime;
     }
 
-    public void setCarInsuranceTime(Date carInsuranceTime) {
+    public void setCarInsuranceTime(String carInsuranceTime) {
         this.carInsuranceTime = carInsuranceTime;
     }
 
-    public Long getCarInsuranceCompany() {
+    public Integer getCarInsuranceCompanyId() {
+        return carInsuranceCompanyId;
+    }
+
+    public void setCarInsuranceCompanyId(Integer carInsuranceCompanyId) {
+        this.carInsuranceCompanyId = carInsuranceCompanyId;
+    }
+
+    public String getCarInsuranceCompany() {
         return carInsuranceCompany;
     }
 
-    public void setCarInsuranceCompany(Long carInsuranceCompany) {
+    public void setCarInsuranceCompany(String carInsuranceCompany) {
         this.carInsuranceCompany = carInsuranceCompany;
     }
 
@@ -179,14 +201,6 @@ public class Car implements Serializable {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Long getCarInsuranceCompanyId() {
-        return carInsuranceCompanyId;
-    }
-
-    public void setCarInsuranceCompanyId(Long carInsuranceCompanyId) {
-        this.carInsuranceCompanyId = carInsuranceCompanyId;
     }
 
     public Long getUserId() {
