@@ -57,7 +57,7 @@ public class CarVo extends Car {
         vo.setCarNumberRegion(12);
         vo.setCarNumberEnd("BM760");
         vo.setCarUserName("Bean");
-        vo.setCarInsuranceTime(new Date());
+        vo.setCarInsuranceTime(new Date().toString());
         vo.setCarInsuranceCompanyId(43);
         System.out.println(JSON.toJSONString(vo));
     }
