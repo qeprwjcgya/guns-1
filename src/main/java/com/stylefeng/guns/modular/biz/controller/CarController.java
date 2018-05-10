@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.biz.controller;
 
 import com.google.common.collect.Maps;
+import com.stylefeng.guns.modular.biz.dto.GeoDto;
 import com.stylefeng.guns.modular.biz.model.Store;
 import com.stylefeng.guns.modular.biz.service.CarService;
 import com.stylefeng.guns.modular.biz.util.PKGenerator;
@@ -36,8 +37,8 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    @RequestMapping(path = "/wechat/geo")
-    public ResponseEntity<Map<String, String>> getGeo() {
+    @GetMapping(path = "/wechat/car/geo")
+    public ResponseEntity<Map<String, String>> getGeo(@RequestBody GeoDto geoDto) {
         Map<String, String> map = Maps.newHashMap();
         map.put("lng", "106.554546");
         map.put("lat", "29.576546");
@@ -49,6 +50,7 @@ public class CarController {
 
     /**
      * 添加车辆基本信息
+     *
      * @param carVo
      * @return
      */
@@ -114,11 +116,37 @@ public class CarController {
 
     /**
      * 获取车辆列表
+     *
      * @param opendId
      * @return
      */
     @GetMapping("/wechat/car/getCarList")
-    public ResponseEntity getCarList(@RequestParam String opendId){
+    public ResponseEntity getCarList(@RequestParam String opendId) {
+        return new ResponseEntity(carService.getCarList(opendId), HttpStatus.OK);
+    }
+
+    /**
+     * 获取车辆具体信息
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/wechat/car/getCarById")
+    public ResponseEntity getCarById(Long id) {
+        return new ResponseEntity(carService.getCarById(id), HttpStatus.OK);
+    }
+
+    /**
+     * 删除当前车辆信息
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping("/wechat/car/deleteUpdate")
+    public ResponseEntity updateCarStatus(Long id) {
+        carService.deleteCar(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+
 }

@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.stylefeng.guns.common.persistence.dao.DeptMapper">
+<mapper namespace="com.stylefeng.guns.modular.biz.dao.CarMapper">
 
-	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.stylefeng.guns.modular.biz.dto.CarDto">
-		<id column="id" property="id" />
-		<result column="num" property="num" />
-		<result column="pid" property="pid" />
-		<result column="pids" property="pids" />
-		<result column="simplename" property="simplename" />
-		<result column="fullname" property="fullname" />
-		<result column="tips" property="tips" />
-		<result column="version" property="version" />
-	</resultMap>
+  <!-- 通用查询映射结果 -->
+  <resultMap id="resultMap" type="com.stylefeng.guns.modular.biz.dto.CarDto">
+    <id column="id" property="id"/>
+    <result column="car_number" property="carNumber"/>
+    <result column="car_name" property="carName"/>
+    <result column="car_logo" property="carLogo"/>
+  </resultMap>
 
-    <select id="tree" resultType="BaseResultMap" parameterType="string">
+  <select id="getCarByOpenId" resultMap="resultMap" parameterType="string">
       SELECT
         car.id id,
         CONCAT( car.car_number_start, '.', car.car_number_end ) car_number,
@@ -25,7 +21,8 @@
         LEFT JOIN rcwl_user usr ON car.user_id = usr.id
         LEFT JOIN car_brand brand ON brand.id = car.car_series
       WHERE	usr.user_openid =#openid#
-    </select>
+  </select>
+
 
 
 </mapper>

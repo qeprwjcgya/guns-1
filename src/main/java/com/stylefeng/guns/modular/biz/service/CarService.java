@@ -1,5 +1,6 @@
 package com.stylefeng.guns.modular.biz.service;
 
+import com.stylefeng.guns.modular.biz.dto.CarDto;
 import com.stylefeng.guns.modular.biz.model.*;
 import com.stylefeng.guns.modular.biz.util.IService;
 import com.stylefeng.guns.modular.biz.vo.CarVo;
@@ -83,6 +84,19 @@ public interface CarService extends IService<Car> {
      * @param openid
      * @return
      */
-    List<Car> getCarList(String openid);
+    List<CarDto> getCarList(String openid);
+
+    /**
+     * 查询单台车信息
+     * @param id
+     * @return
+     */
+    Car getCarById(Long id);
+
+    /**
+     * 删除当前车辆信息
+     * @param id
+     */
+    void deleteCar(Long id);
 
 }

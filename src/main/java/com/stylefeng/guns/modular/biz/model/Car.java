@@ -99,6 +99,12 @@ public class Car implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 
+    /**
+     * 车辆状态
+     */
+    @Column(name = "car_status")
+    private Integer carStatus;
+
     public Long getId() {
         return id;
     }
@@ -209,5 +215,13 @@ public class Car implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Integer getCarStatus() {
+        return carStatus;
+    }
+
+    public void setCarStatus(Integer carStatus) {
+        this.carStatus = carStatus;
     }
 }

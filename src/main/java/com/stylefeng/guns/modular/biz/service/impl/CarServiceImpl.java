@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.biz.service.impl;
 
 import com.stylefeng.guns.modular.biz.dao.*;
+import com.stylefeng.guns.modular.biz.dto.CarDto;
 import com.stylefeng.guns.modular.biz.exception.BusinessException;
 import com.stylefeng.guns.modular.biz.model.*;
 import com.stylefeng.guns.modular.biz.service.CarService;
@@ -180,22 +181,36 @@ public class CarServiceImpl extends BaseService<Car> implements CarService {
         try {
             Example example = new Example(PlatesNumber.class);
             example.createCriteria().andEqualTo("parentId", parentId);
-            return this.platesNumberMapper.selectByExample(parentId);
+            return this.platesNumberMapper.selectByExample(example);
         } catch (Exception ex) {
             throw new BusinessException();
         }
     }
 
     @Override
-    public List<Car> getCarList(String openid) {
+    public List<CarDto> getCarList(String openid) {
         try {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserOpenid(openid);
-            userInfo = this.userInfoMapper.selectOne(userInfo);
+            return this.carMapper.getCarListByOpenId(openid);
+        } catch (Exception ex) {
+            throw new BusinessException();
+        }
+    }
 
-            Car car = new Car();
-            car.setUserId(userInfo.getId());
-            return  this.carMapper.select(car);
+    @Override
+    public Car getCarById(Long id) {
+        try {
+            return this.carMapper.selectByPrimaryKey(id);
+        } catch (Exception ex) {
+            throw new BusinessException();
+        }
+    }
+
+    @Override
+    public void deleteCar(Long id) {
+        try {
+            Car car = this.carMapper.selectByPrimaryKey(id);
+            car.setCarStatus(0);
+            this.carMapper.updateByPrimaryKeySelective(car);
         } catch (Exception ex) {
             throw new BusinessException();
         }
