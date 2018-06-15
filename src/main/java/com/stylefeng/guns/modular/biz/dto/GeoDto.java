@@ -1,5 +1,7 @@
 package com.stylefeng.guns.modular.biz.dto;
 
+import java.io.Serializable;
+
 /**
  * <p>Description: </p>
  * <p>Copyright(c) 2015-2016 cadyd.com Inc. All Rights Reserved.</p>
@@ -17,7 +19,7 @@ package com.stylefeng.guns.modular.biz.dto;
  * @author <a href="wubin3347@gmail.com">wubin</a>
  * @version 1.0.0
  */
-public class GeoDto {
+public class GeoDto implements Serializable {
 
     /**
      * 纬度

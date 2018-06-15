@@ -3,9 +3,11 @@ package com.stylefeng.guns.modular.biz.controller;
 import com.alibaba.fastjson.JSON;
 import com.stylefeng.guns.modular.biz.controller.data.*;
 import com.stylefeng.guns.modular.biz.dao.BrandMapper;
+import com.stylefeng.guns.modular.biz.dao.CarBrandMapper;
 import com.stylefeng.guns.modular.biz.dao.InsuranceCompanyMapper;
 import com.stylefeng.guns.modular.biz.dao.PlatesNumberMapper;
 import com.stylefeng.guns.modular.biz.model.Brand;
+import com.stylefeng.guns.modular.biz.model.CarBrand;
 import com.stylefeng.guns.modular.biz.model.InsuranceCompany;
 import com.stylefeng.guns.modular.biz.model.PlatesNumber;
 import com.stylefeng.guns.modular.biz.util.PKGenerator;
@@ -16,6 +18,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -44,6 +47,8 @@ public class DataController {
     private PlatesNumberMapper numberMapper;
     @Autowired
     private InsuranceCompanyMapper companyMapper;
+    @Autowired
+    private CarBrandMapper carBrandMapper;
 
     //    @GetMapping("/wechat/data/type")
     public ResponseEntity setData() {
@@ -132,6 +137,50 @@ public class DataController {
             for (InsuranceCompany company : typeList.getData()) {
                 companyMapper.insertSelective(company);
             }
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @GetMapping("/wechat/car/brandData")
+    public ResponseEntity getBrandData() {
+        try {
+            String url = "http://crm1.zhongtukj.com/Boss/Service/EasyDataSources/CarData.ashx?action=BrandList";
+            System.out.println(url);
+            String body = HttpClientUtil.sendGetData(url, "utf-8");
+
+            System.out.println(body);
+
+            CarData data = JSON.parseObject(body,CarData.class);
+
+
+            for(CarBrand car : data.getData()){
+                car.setParentId(0);
+
+                System.err.println("-1--->"+JSON.toJSONString(car));
+                this.carBrandMapper.insertSelective(car);
+
+                String urlFirst = "http://crm1.zhongtukj.com/Boss/Service/EasyDataSources/CarData.ashx?action=CheXiList&pid="+car.getId();
+                String bodyFirst = HttpClientUtil.sendGetData(urlFirst, "utf-8");
+                CarList carFirstList = JSON.parseObject(bodyFirst,CarList.class);
+                for(CarBrand carFirst:carFirstList){
+                    System.err.println("-2--->"+JSON.toJSONString(carFirst));
+                    carFirst.setParentId(car.getId());
+                    this.carBrandMapper.insertSelective(carFirst);
+                    String urlSecond="http://crm1.zhongtukj.com/Boss/Service/EasyDataSources/CarData.ashx?action=CheXingList&pid="+car.getId();
+                    String bodySecond = HttpClientUtil.sendGetData(urlSecond, "utf-8");
+                    CarList carSecondList = JSON.parseObject(bodySecond,CarList.class);
+                    for(CarBrand carSecond:carSecondList){
+                        System.err.println("-3--->"+JSON.toJSONString(carSecond));
+                        carSecond.setParentId(carFirst.getId());
+                        this.carBrandMapper.insertSelective(carSecond);
+                    }
+                }
+
+            }
+
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

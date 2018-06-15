@@ -37,8 +37,8 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    @GetMapping(path = "/wechat/car/geo")
-    public ResponseEntity<Map<String, String>> getGeo(@RequestBody GeoDto geoDto) {
+    @PostMapping(path = "/wechat/car/geo")
+    public ResponseEntity getGeo(@RequestBody GeoDto geoDto) {
         Map<String, String> map = Maps.newHashMap();
         map.put("lng", "106.554546");
         map.put("lat", "29.576546");

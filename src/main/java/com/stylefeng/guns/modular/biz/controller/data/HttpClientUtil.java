@@ -12,6 +12,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
@@ -134,6 +135,7 @@ public class HttpClientUtil {
         // 创建get方式请求对象
         HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader("Content-type", "application/json");
+        httpGet.addHeader(new BasicHeader("Cookie", "UM_distinctid=163ca04f953d0-06e147ace1788-44410a2e-1fa400-163ca04f95529d; _qddaz=QD.4dks8e.x0sij7.ji00wggn; pgv_pvi=6628072448; ASP.NET_SessionId=y4hobjdpz4hyii3kkt1plook; ztrjnew@4db97b96-12af-45b0-b232-fd1e9b7a672e=UserId=aWZvyIuvYZI=&CSID=VTxfRDVw/MY=&UserName=aWZvyIuvYZI=&SID=8+kIlbsT3Pc=&RoleId=6/L4o1sNJ90=&GroupId=VBdEVOSspJM="));
         // 通过请求对象获取响应对象
         CloseableHttpResponse response = httpClient.execute(httpGet);
 
